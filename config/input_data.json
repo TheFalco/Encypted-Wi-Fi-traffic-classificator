@@ -1,5 +1,8 @@
 {
   "STA": "1c:4b:d6:93:f1:a2",
   "AP": "a4:91:b1:c3:3e:72",
-  "pcapng_file": "telegram_2.pcapng"
+  "group_size": 500,
+  "percentile" : 300,
+  "training_set": ["Chatting_01", "Chatting_02", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"],
+  "offline_file": "telegram_2.pcapng"
 }
