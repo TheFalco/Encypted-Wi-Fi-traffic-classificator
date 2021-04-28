@@ -3,6 +3,5 @@
   "AP": "a4:91:b1:c3:3e:72",
   "group_size": 500,
   "percentile" : 300,
-  "training_set": ["Chatting_01", "Chatting_02", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"],
-  "offline_file": "telegram_2.pcapng"
+  "training_set": ["Chatting_01", "Chatting_02", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"]
 }
