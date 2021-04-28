@@ -1,5 +1,4 @@
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn import preprocessing
 import pickle
 import utils
 
@@ -71,8 +70,7 @@ def train():
     down_model = KNeighborsClassifier(n_neighbors=3)
     # Train the model using the training sets
     # up_model.fit(up_features, up_labels)
-    scaled_down_features = preprocessing.scale(down_features)
-    down_model.fit(scaled_down_features, down_labels)
+    down_model.fit(down_features, down_labels)
     print("Done!")
     save_model(down_model)
     return down_model
