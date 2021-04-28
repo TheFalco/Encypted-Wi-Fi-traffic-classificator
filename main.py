@@ -1,5 +1,6 @@
 import argparse
 from offline_classifier import classify
+from online_classifier import classify_online
 
 
 def start():
@@ -9,6 +10,7 @@ def start():
     parser.add_argument("-sta", default="", type=str, required=True)
     parser.add_argument("-ap", default="", type=str, required=True)
     parser.add_argument("-type", default="", type=int, required=True)
+    parser.add_argument("-i", default="", type=str, required=False)
 
     args = parser.parse_args()
 
@@ -17,7 +19,7 @@ def start():
 
     if args.type:
         # start online capture
-        pass
+        classify_online(sta, ap, args.i)
     else:
         # start offline capture
         classify(args.f, sta, ap)
