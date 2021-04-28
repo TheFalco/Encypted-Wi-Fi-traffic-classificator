@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 import pyshark
 import pathlib
@@ -56,7 +58,7 @@ def get_reference_values(data, activities):
     return values
 
 
-def load_tr_data(frame_size, data_rate, activity, feature_set, feature_label, DELIM):
+def load_tr_data(frame_size: List[int], activity: str, feature_set, feature_label, DELIM: int):
     """
     Load the training set list with the extrapolated data
     :param frame_size: up_frame_size or down_frame_size
@@ -68,15 +70,15 @@ def load_tr_data(frame_size, data_rate, activity, feature_set, feature_label, DE
     :return: the feature set, the label set and two empty lists, in order to clean up/down frame_size and data_rate
     """
     # feature_set is (mean frame size, mean data rate, percentage of packets with size < DELIM
-    feature_set.append([round(np.mean(frame_size), 2), round(np.mean(data_rate), 2),
-                        (round((sum(i < DELIM for i in frame_size)) / len(frame_size), 2))])
+    feature_set.append([np.mean(frame_size), np.std(frame_size),
+                        (sum(i < DELIM for i in frame_size) / len(frame_size))])
     # feature_labels is index of file (will be useful to retrieve activity name)
     feature_label.append(activity)
     # Reset variables
     return feature_set, feature_label, [], []
 
 
-def get_activity_name(activity):
+def get_activity_name(activity: str) -> str:
     """
     Returns the name of the activity
     :param activity: name of training set files (ActivityName_XX)
