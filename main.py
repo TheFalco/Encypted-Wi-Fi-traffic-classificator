@@ -1,6 +1,6 @@
-import argparse
-from offline_classifier import classify
 from online_classifier import classify_online
+from offline_classifier import classify_offline
+import argparse
 
 
 def start():
@@ -22,7 +22,7 @@ def start():
         classify_online(sta, ap, args.i)
     else:
         # start offline capture
-        classify(args.f, sta, ap)
+        classify_offline(args.f, sta, ap)
 
 
 if __name__ == "__main__":

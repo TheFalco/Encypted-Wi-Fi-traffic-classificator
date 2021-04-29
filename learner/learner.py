@@ -9,13 +9,17 @@ data = utils.open_json("input_data.json", "config")
 STA = data["STA"]
 AP = data["AP"]
 MAX = data["group_size"]
-DELIM = data["percentile"]
+P = data["percentile"]
 
 # List of training sample files
 in_files = data["training_set"]
 
 
 def train():
+    """
+    Train the model starting from the given training set
+    :return: the trained model
+    """
     # Learner variables
     up_features = []
     up_labels = []
@@ -48,7 +52,7 @@ def train():
                     if up_count % MAX == 0:
                         up_features, up_labels, up_frame_size, up_data_rate = \
                             utils.load_tr_data(up_frame_size, activity,
-                                               up_features, up_labels, DELIM)
+                                               up_features, up_labels, P)
                 # Downstream
                 elif pck.wlan.da == STA and pck.wlan.sa == AP:
                     down_count += 1
@@ -56,7 +60,7 @@ def train():
                     if down_count % MAX == 0:
                         down_features, down_labels, down_frame_size, down_data_rate = \
                             utils.load_tr_data(down_frame_size, activity,
-                                               down_features, down_labels, DELIM)
+                                               down_features, down_labels, P)
             except:
                 # print("", end="")
                 pass
@@ -77,6 +81,10 @@ def train():
 
 
 def save_model(down_model):
+    """
+    Save the model in memory, for future uses
+    :param down_model: the trained model
+    """
     # Save the model to disk
     filename = 'learner/trained_model.sav'
     # to_save_tuple = (up_model, down_model)
@@ -85,13 +93,17 @@ def save_model(down_model):
 
 
 def load_ml_model():
+    """
+    Load the model from memory, if available. Otherwise, train the model
+    :return: the trained model
+    """
     try:
-        print("Loading trained models...")
-        # up_lrnd_model,
-        down_lrnd_model = pickle.load(open("learner/trained_model.sav", "rb"))
+        print("Loading trained model...")
+        # up_learned_model,
+        down_learned_model = pickle.load(open("learner/trained_model.sav", "rb"))
         print("Done")
-        return down_lrnd_model
-    except (OSError, IOError) as e:
+        return down_learned_model
+    except (OSError, IOError):
         # If not present, start the learning
-        print("Trained models not found.\nInitializing learner.py...")
+        print("Trained model not found.\nInitializing learner.py...")
         return train()

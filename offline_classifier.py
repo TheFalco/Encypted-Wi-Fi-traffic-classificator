@@ -1,22 +1,26 @@
 import pyshark
-
-import utils
 from learner.learner import load_ml_model
 import numpy as np
 
 # Global variables
-DELIM = 300
+P = 300
 
 
-def classify(path: str, sta: str, ap: str):
+def classify_offline(path: str, sta: str, ap: str):
+    """
+    Analyze the given file
+    :param path: path to the file
+    :param sta: station MAC address
+    :param ap: access point MAC address
+    """
     # Variables
     up_frame_size = []
     down_frame_size = []
 
     # try to load the model, otherwise create a new one
-    down_lrnd_model = load_ml_model()
+    down_learned_model = load_ml_model()
 
-    # Open file to classify
+    # Open file to classify_offline
     cap = pyshark.FileCapture(path)
 
     print("Starting offline analysis...")
@@ -39,18 +43,23 @@ def classify(path: str, sta: str, ap: str):
 
     # Calculate the mean of the extrapolated data
     # to_predict_up = [np.mean(up_frame_size), np.std(up_frame_size),
-    #                  (sum(i < DELIM for i in up_frame_size) / len(up_frame_size))]
+    #                  (sum(i < P for i in up_frame_size) / len(up_frame_size))]
     to_predict_down = [np.mean(down_frame_size), np.std(down_frame_size),
-                       (sum(i < DELIM for i in down_frame_size) / len(down_frame_size))]
-
-    predict(down_lrnd_model, to_predict_down)
+                       (sum(i < P for i in down_frame_size) / len(down_frame_size))]
+    # Predict the model
+    predict(down_learned_model, to_predict_down)
 
 
 def predict(model, capture):
+    """
+    Run the prediction
+    :param model: the trained model
+    :param capture: the analyzed offline model
+    """
     # Run the prediction
-    # result_up = up_lrnd_model.predict([to_predict_up])
+    # result_up = up_learned_model.predict([to_predict_up])
     result_down = model.predict([capture])
 
     print(result_down)
-    print("Analisys complited: ", end=" ")
+    print("Analysis completed: ", end=" ")
     print(result_down[0])
