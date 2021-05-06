@@ -5,9 +5,10 @@ import pyshark
 P = 300
 
 
-def classify_online(sta: str, ap: str, interface: str):
+def classify_online(sta: str, ap: str, interface: str, to: int):
     """
     Perform an online classification
+    :param to: time_out of the capture; default is 20
     :param sta: station MAC address
     :param ap: access point MAC address
     :param interface: interface to listen on
@@ -22,7 +23,7 @@ def classify_online(sta: str, ap: str, interface: str):
     while True:
         print("Listening for 20 seconds...")
         capture = pyshark.LiveCapture(interface=interface.lower(), display_filter=capt_filter)
-        capture.sniff(timeout=20)
+        capture.sniff(timeout=to)
 
         print("Starting online analysis...")
         
