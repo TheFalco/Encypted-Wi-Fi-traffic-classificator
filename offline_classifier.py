@@ -15,6 +15,7 @@ def classify_offline(path: str, sta: str, ap: str):
     """
     # Variables
     frame_size = []
+    interval_time = []
 
     # try to load the model, otherwise create a new one
     learned_model = load_ml_model()
@@ -32,13 +33,15 @@ def classify_offline(path: str, sta: str, ap: str):
                 # Downstream
                 if pck.wlan.da == sta and pck.wlan.sa == ap:
                     frame_size.append(int(pck.frame_info.len))
+                    interval_time.append((float(pck.frame_info.time_delta_displayed)))
         except:
             # print("", end="")
             pass
     cap.close()
 
     # Calculate the mean of the extrapolated data
-    to_predict = [np.mean(frame_size), np.std(frame_size), (sum(i < P for i in frame_size) / len(frame_size))]
+    to_predict = [np.mean(frame_size), np.std(frame_size), (sum(i < P for i in frame_size) / len(frame_size)),
+                  np.mean(interval_time)]
     # Predict the model
     predict(learned_model, to_predict)
 

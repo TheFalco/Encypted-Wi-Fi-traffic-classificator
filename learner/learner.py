@@ -26,6 +26,7 @@ def train():
 
     # Temp variables
     frame_size = []
+    interval_time = []
 
     # Start learning from given data
     for f in in_files:
@@ -45,9 +46,10 @@ def train():
                 if pck.wlan.da == STA and pck.wlan.sa == AP:
                     count += 1
                     frame_size.append(float(pck.frame_info.len))
+                    interval_time.append(float(pck.frame_info.time_delta_displayed))
                     if count % MAX == 0:
-                        features, labels, frame_size, down_data_rate = utils.load_tr_data(frame_size, activity,
-                                                                                          features, labels, P)
+                        features, labels, frame_size, interval_time = utils.load_tr_data(frame_size, activity, features,
+                                                                                         labels, P, interval_time)
             except:
                 # print("", end="")
                 pass

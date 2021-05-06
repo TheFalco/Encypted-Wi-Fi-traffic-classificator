@@ -18,6 +18,10 @@ def classify_online(sta: str, ap: str, interface: str, to: int):
     # Set the filter
     capt_filter = "wlan.sa == " + ap + " && wlan.da == " + sta + " && wlan.fc.type_subtype == 0x0028"
 
+    # Temp variables
+    frame_size = []
+    interval_time = []
+
     print("Starting online analysis...")
 
     while True:
@@ -26,8 +30,11 @@ def classify_online(sta: str, ap: str, interface: str, to: int):
         capture.sniff(timeout=to)
 
         print("Starting online analysis...")
-        
-        frame_size = [int(pkt.frame_info.len) for pkt in capture._packets]
+
+        for pck in capture:
+            frame_size.append(int(pck.frame_info.len))
+            interval_time.append(float(pck.frame_info.time_delta_displayed))
         # Calculate the mean of the sniffed data
-        to_predict = [np.mean(frame_size), np.std(frame_size), (sum(i < P for i in frame_size) / len(frame_size))]
+        to_predict = [np.mean(frame_size), np.std(frame_size), (sum(i < P for i in frame_size) / len(frame_size)),
+                      np.mean(interval_time)]
         print("Current user activity : " + model.predict([to_predict])[0])

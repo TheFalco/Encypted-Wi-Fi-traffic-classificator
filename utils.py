@@ -57,9 +57,10 @@ def get_reference_values(data, activities):
     return values
 
 
-def load_tr_data(frame_size: List[int], activity: str, feature_set, feature_label, p: int):
+def load_tr_data(frame_size: List[int], activity: str, feature_set, feature_label, p: int, interval_time):
     """
     Load the training set list with the extrapolated data
+    :param interval_time: time between packets arriving
     :param frame_size: up_frame_size or down_frame_size
     :param activity: name of the training file
     :param feature_set: up_features or down_features
@@ -68,8 +69,8 @@ def load_tr_data(frame_size: List[int], activity: str, feature_set, feature_labe
     :return: the feature set, the label set and two empty lists, in order to clean up/down frame_size and data_rate
     """
     # feature_set is (mean frame size, mean data rate, percentage of packets with size < p
-    feature_set.append([np.mean(frame_size), np.std(frame_size),
-                        (sum(i < p for i in frame_size) / len(frame_size))])
+    feature_set.append([np.mean(frame_size), np.std(frame_size), (sum(i < p for i in frame_size) / len(frame_size)),
+                        np.mean(interval_time)])
     # feature_labels is index of file (will be useful to retrieve activity name)
     feature_label.append(activity)
     # Reset variables
