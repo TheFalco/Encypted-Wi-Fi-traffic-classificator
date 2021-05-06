@@ -25,7 +25,8 @@ MAC addresses should be in the form XX:XX:XX:XX:XX:XX
 ## Online classification
 Perform classification over packets captured live in monitor mode:
 ```
-python main.py -type 1 -i interface -sta Station_MAC_Address -ap AccessPoint_MAC_Address  
+python main.py -type 1 -i interface -sta Station_MAC_Address -ap AccessPoint_MAC_Address -t Live_Capture_Timeout
 ```
 MAC addresses should be in the form XX:XX:XX:XX:XX:XX  
-Interface should be eth0, wlan0 ecc.
+Interface should be eth0, wlan0 ecc.  
+Live capture Timout is set to 20 by default and it is an optional argument. It is expressed in seconds, and it expresses the time between each prediction in online classification.
