@@ -21,21 +21,17 @@ def train():
     :return: the trained model
     """
     # Learner variables
-    up_features = []
-    up_labels = []
-    down_features = []
-    down_labels = []
+    features = []
+    labels = []
 
     # Temp variables
-    up_frame_size = []
-    down_frame_size = []
+    frame_size = []
 
     # Start learning from given data
     for f in in_files:
         print("Opening file %d/%d" % (in_files.index(f) + 1, len(in_files)))
         # Clean counters
-        up_count = 1
-        down_count = 1
+        count = 1
         activity = utils.get_activity_name(f)
 
         # Open training file
@@ -45,22 +41,13 @@ def train():
         for pck in cap:
             # To avoid malformed packets
             try:
-                # Upstream
-                if pck.wlan.da == AP and pck.wlan.sa == STA:
-                    up_frame_size.append(int(pck.frame_info.len))
-                    up_count += 1
-                    if up_count % MAX == 0:
-                        up_features, up_labels, up_frame_size, up_data_rate = \
-                            utils.load_tr_data(up_frame_size, activity,
-                                               up_features, up_labels, P)
                 # Downstream
-                elif pck.wlan.da == STA and pck.wlan.sa == AP:
-                    down_count += 1
-                    down_frame_size.append(float(pck.frame_info.len))
-                    if down_count % MAX == 0:
-                        down_features, down_labels, down_frame_size, down_data_rate = \
-                            utils.load_tr_data(down_frame_size, activity,
-                                               down_features, down_labels, P)
+                if pck.wlan.da == STA and pck.wlan.sa == AP:
+                    count += 1
+                    frame_size.append(float(pck.frame_info.len))
+                    if count % MAX == 0:
+                        features, labels, frame_size, down_data_rate = utils.load_tr_data(frame_size, activity,
+                                                                                          features, labels, P)
             except:
                 # print("", end="")
                 pass
@@ -70,25 +57,22 @@ def train():
         print("Closing file %d" % (in_files.index(f) + 1))
 
     print("Training the learner...")
-    # up_model = KNeighborsClassifier(n_neighbors=3)
-    down_model = KNeighborsClassifier(n_neighbors=3)
+    model = KNeighborsClassifier(n_neighbors=3)
     # Train the model using the training sets
-    # up_model.fit(up_features, up_labels)
-    down_model.fit(down_features, down_labels)
+    model.fit(features, labels)
     print("Done!")
-    save_model(down_model)
-    return down_model
+    save_model(model)
+    return model
 
 
-def save_model(down_model):
+def save_model(model):
     """
     Save the model in memory, for future uses
-    :param down_model: the trained model
+    :param model: the trained model
     """
     # Save the model to disk
     filename = 'learner/trained_model.sav'
-    # to_save_tuple = (up_model, down_model)
-    pickle.dump(down_model, open(filename, 'wb'))
+    pickle.dump(model, open(filename, 'wb'))
     print("Models correctly saved")
 
 
@@ -99,10 +83,9 @@ def load_ml_model():
     """
     try:
         print("Loading trained model...")
-        # up_learned_model,
-        down_learned_model = pickle.load(open("learner/trained_model.sav", "rb"))
+        learned_model = pickle.load(open("learner/trained_model.sav", "rb"))
         print("Done")
-        return down_learned_model
+        return learned_model
     except (OSError, IOError):
         # If not present, start the learning
         print("Trained model not found.\nInitializing learner.py...")

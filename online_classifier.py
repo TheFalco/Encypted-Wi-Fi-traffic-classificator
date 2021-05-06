@@ -13,7 +13,7 @@ def classify_online(sta: str, ap: str, interface: str):
     :param interface: interface to listen on
     """
     # Load the model
-    down_model = load_ml_model()
+    model = load_ml_model()
     # Set the filter
     capt_filter = "wlan.sa == " + ap + " && wlan.da == " + sta + " && wlan.fc.type_subtype == 0x0028"
 
@@ -26,8 +26,7 @@ def classify_online(sta: str, ap: str, interface: str):
 
         print("Starting online analysis...")
         
-        down_frame_size = [int(pkt.frame_info.len) for pkt in capture._packets]
+        frame_size = [int(pkt.frame_info.len) for pkt in capture._packets]
         # Calculate the mean of the sniffed data
-        to_predict_down = [np.mean(down_frame_size), np.std(down_frame_size),
-                           (sum(i < P for i in down_frame_size) / len(down_frame_size))]
-        print("Current user activity : " + down_model.predict([to_predict_down])[0])
+        to_predict = [np.mean(frame_size), np.std(frame_size), (sum(i < P for i in frame_size) / len(frame_size))]
+        print("Current user activity : " + model.predict([to_predict])[0])
