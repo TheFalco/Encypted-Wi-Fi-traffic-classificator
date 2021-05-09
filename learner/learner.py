@@ -77,7 +77,7 @@ def save_model(model):
     :param model: the trained model
     """
     # Save the model to disk
-    filename = 'learner/trained_model.sav'
+    filename = './trained_model.sav'
     pickle.dump(model, open(filename, 'wb'))
     print("Models correctly saved")
 
@@ -89,7 +89,7 @@ def load_ml_model():
     """
     try:
         print("Loading trained model...")
-        learned_model = pickle.load(open("learner/trained_model.sav", "rb"))
+        learned_model = pickle.load(open("./trained_model.sav", "rb"))
         print("Done")
         return learned_model
     except (OSError, IOError):
