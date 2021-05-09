@@ -9,7 +9,7 @@ def start():
     parser.add_argument("-f", default="", type=str, required=False)
     parser.add_argument("-sta", default="", type=str, required=True)
     parser.add_argument("-ap", default="", type=str, required=True)
-    parser.add_argument("-type", default="", type=int, required=True)
+    parser.add_argument("-type", default=0, type=int, required=True)
     parser.add_argument("-i", default="", type=str, required=False)
     parser.add_argument("-t", default="20", type=int, required=False)
 
