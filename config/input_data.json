@@ -3,5 +3,6 @@
   "AP": "a4:91:b1:c3:3e:72",
   "group_size": 500,
   "percentile" : 200,
-  "training_set": ["Chatting_01", "Chatting_02", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"]
+  "training_set": ["Chatting_01", "Chatting_02", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"],
+  "capture_length": [1498, 2961, 13956, 25696, 26592, 15040, 17548, 35907, 38994]
 }
