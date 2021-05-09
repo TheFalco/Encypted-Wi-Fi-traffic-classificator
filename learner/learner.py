@@ -1,4 +1,5 @@
 from sklearn.neighbors import KNeighborsClassifier
+from tqdm import tqdm
 import pickle
 import utils
 
@@ -10,6 +11,7 @@ STA = data["STA"]
 AP = data["AP"]
 MAX = data["group_size"]
 P = data["percentile"]
+cap_len = data["capture_length"]
 
 # List of training sample files
 in_files = data["training_set"]
@@ -37,8 +39,8 @@ def train():
 
         # Open training file
         cap = utils.open_pcapng(f + ".pcapng", "training_captures")
-
         print("Analyzing...")
+        pbar = tqdm(total=(cap_len[in_files.index(f)]//MAX), ncols=100)
         for pck in cap:
             # To avoid malformed packets
             try:
@@ -50,11 +52,13 @@ def train():
                     if count % MAX == 0:
                         features, labels, frame_size, interval_time = utils.load_tr_data(frame_size, activity, features,
                                                                                          labels, P, interval_time)
+                        pbar.update(1)
             except:
                 # print("", end="")
                 pass
 
         # Close the file
+        pbar.close()
         cap.close()
         print("Closing file %d" % (in_files.index(f) + 1))
 
