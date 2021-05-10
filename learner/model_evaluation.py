@@ -5,14 +5,14 @@ from sklearn.metrics import plot_confusion_matrix
 import matplotlib.pyplot as plt
 
 
-def compute_test_set(model):
+def compute_test_set():
     data = utils.open_json("input_data.json", "config")
 
     # Global variables
     sta = data["STA"]
     ap = data["AP"]
     g_size = 500
-    perc = data["percentile"]
+    p = data["percentile"]
 
     # List of training sample files
     in_files = data["training_set"]
@@ -39,13 +39,13 @@ def compute_test_set(model):
                     if count % g_size == 0:
                         to_predict, labels, frame_size, interval_time = utils.load_tr_data(frame_size, activity,
                                                                                            to_predict,
-                                                                                           labels, perc, interval_time)
+                                                                                           labels, p, interval_time)
             except:
                 # print("", end="")
                 pass
         cap.close()
 
-    anal_file = './test_file.sav'
+    anal_file = 'evaluation_file.sav'
     pickle.dump((to_predict, labels), open(anal_file, 'wb'))
     return to_predict, labels
 
@@ -54,11 +54,11 @@ def evaluate_model():
     model = load_ml_model()
     try:
         print("Loading pre-processed test dataset...")
-        to_predict, labels = pickle.load(open('learner/test_file.sav', 'rb'))
+        to_predict, labels = pickle.load(open('learner/evaluation_file.sav', 'rb'))
         print("...loading succeeded")
     except:
         print("...loading failed, processing test dataset")
-        to_predict, labels = compute_test_set(model)
+        to_predict, labels = compute_test_set()
 
     print("Computing confusion matrix...")
     plot_confusion_matrix(model, to_predict, labels, cmap=plt.cm.Blues)
