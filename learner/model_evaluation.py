@@ -54,7 +54,7 @@ def evaluate_model():
     model = load_ml_model()
     try:
         print("Loading pre-processed test dataset...")
-        to_predict, labels = pickle.load(open('./test_file.sav', 'rb'))
+        to_predict, labels = pickle.load(open('learner/test_file.sav', 'rb'))
         print("...loading succeeded")
     except:
         print("...loading failed, processing test dataset")
@@ -63,7 +63,7 @@ def evaluate_model():
     print("Computing confusion matrix...")
     plot_confusion_matrix(model, to_predict, labels, cmap=plt.cm.Blues)
     print("...matrix computed")
-    plt.savefig('./confusion_matrix.png')
+    plt.savefig('learner/confusion_matrix.png')
     plt.show()
 
 
