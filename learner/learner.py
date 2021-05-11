@@ -39,9 +39,9 @@ def train():
 
         # Open training file
         cap = utils.open_pcapng(f + ".pcapng", "training_captures")
-        print("Analyzing...")
+        # print("Analyzing...")
         # Initialize progress bar
-        p_bar = tqdm(total=(cap_len[in_files.index(f)]//MAX), ncols=100, colour='white')
+        p_bar = tqdm(total=(cap_len[in_files.index(f)]//MAX), ncols=100, colour='white', desc='Analyzing')
 
         for pck in cap:
             # To avoid malformed packets
@@ -61,8 +61,8 @@ def train():
                 pass
 
         # Close the file and progress bar
-        cap.close()
         p_bar.close()
+        cap.close()
         print("Closing file %d" % (in_files.index(f) + 1))
 
     print("Training the learner...")
@@ -80,7 +80,7 @@ def save_model(model):
     :param model: the trained model
     """
     # Save the model to disk
-    filename = './trained_model.sav'
+    filename = 'trained_model.sav'
     pickle.dump(model, open(filename, 'wb'))
     print("Models correctly saved")
 
@@ -92,7 +92,7 @@ def load_ml_model():
     """
     try:
         print("Loading trained model...")
-        learned_model = pickle.load(open("learner/trained_model.sav", "rb"))
+        learned_model = pickle.load(open("trained_model.sav", "rb"))
         print("Done")
         return learned_model
     except (OSError, IOError):
