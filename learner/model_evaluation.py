@@ -1,6 +1,6 @@
 import utils
 import pickle
-from learner import load_ml_model
+from learner.learner import load_ml_model
 from sklearn.metrics import plot_confusion_matrix
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -50,7 +50,7 @@ def compute_test_set():
         p_bar.close()
         cap.close()
 
-    anal_file = 'evaluation_file.sav'
+    anal_file = 'learner/evaluation_file.sav'
     pickle.dump((to_predict, labels), open(anal_file, 'wb'))
     return to_predict, labels
 
@@ -59,7 +59,7 @@ def evaluate_model():
     model = load_ml_model()
     try:
         print("Loading pre-processed test dataset...")
-        to_predict, labels = pickle.load(open('evaluation_file.sav', 'rb'))
+        to_predict, labels = pickle.load(open('learner/evaluation_file.sav', 'rb'))
         print("...loading succeeded")
     except:
         print("...loading failed, processing test dataset")
@@ -68,9 +68,6 @@ def evaluate_model():
     print("Computing confusion matrix...")
     plot_confusion_matrix(model, to_predict, labels, cmap=plt.cm.Blues)
     print("...matrix computed")
-    plt.savefig('confusion_matrix.png')
+    plt.savefig('learner/confusion_matrix.png')
     plt.show()
 
-
-if __name__ == "__main__":
-    evaluate_model()
