@@ -1,5 +1,6 @@
 from online_classifier import classify_online
 from offline_classifier import classify_offline
+from learner.model_evaluation import evaluate_model
 import argparse
 
 
@@ -18,12 +19,14 @@ def start():
     sta = args.sta
     ap = args.ap
 
-    if args.type:
+    if args.type == 1:
         # start online capture
         classify_online(sta, ap, args.i, args.t)
-    else:
+    elif args.type == 0:
         # start offline capture
         classify_offline(args.f, sta, ap)
+    elif args.type == 2:
+        evaluate_model()
 
 
 if __name__ == "__main__":
