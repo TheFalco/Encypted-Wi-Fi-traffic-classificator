@@ -5,6 +5,6 @@
   "percentile" : 200,
   "training_set": ["Chatting_01", "Chatting_02", "Chatting_03", "Browsing_01", "Browsing_02", "OnlineVideo_01", "OnlineVideo_02", "OnlineVideo_03", "Downloading_01", "Downloading_02"],
   "capture_length": [1498, 2961, 5295, 13956, 25696, 26592, 15040, 17548, 35907, 38994],
-  "evaluation_set": ["Chatting_01", "Chatting_02", "Chatting_03", "Browsing_02", "Downloading_01", "OnlineVideo_01"],
-  "eval_cap_length": [1498, 2961, 5295, 56897, 78690, 70316]
+  "evaluation_set": ["Chatting_01", "Chatting_02", "Chatting_03", "Browsing_01", "Downloading_01", "OnlineVideo_01"],
+  "eval_cap_length": [1498, 2961, 5295, 50644, 78690, 70316]
 }
