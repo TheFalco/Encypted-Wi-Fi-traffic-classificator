@@ -14,10 +14,10 @@ def compute_test_set():
     ap = data["AP"]
     g_size = 500
     p = data["percentile"]
-    cap_len = data["capture_length"]
+    cap_len = data["eval_cap_length"]
 
     # List of training sample files
-    in_files = data["training_set"]
+    in_files = data["evaluation_set"]
 
     to_predict = []
     labels = []
@@ -29,7 +29,7 @@ def compute_test_set():
         count = 1
         activity = utils.get_activity_name(f)
         print("Evaluating file: %s" % f)
-        cap = utils.open_pcapng(f + ".pcapng", "training_captures")
+        cap = utils.open_pcapng(f + ".pcapng", "evaluation_captures")
         p_bar = tqdm(total=(cap_len[in_files.index(f)] // g_size), ncols=100, colour='white', desc='Analyzing')
         for pck in cap:
             # To avoid malformed packets
@@ -68,6 +68,12 @@ def evaluate_model():
     print("Computing confusion matrix...")
     plot_confusion_matrix(model, to_predict, labels, cmap=plt.cm.Blues)
     print("...matrix computed")
-    plt.savefig('learner/confusion_matrix.png')
+    plt.savefig('learner/confusion_matrix_absolute.png')
+    plt.show()
+
+    print("Computing percentage confusion matrix...")
+    plot_confusion_matrix(model, to_predict, labels, cmap=plt.cm.Greens, normalize='true')
+    print("...matrix computed")
+    plt.savefig('learner/confusion_matrix_percentage.png')
     plt.show()
 
