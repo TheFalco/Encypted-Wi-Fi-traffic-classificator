@@ -22,16 +22,14 @@ def classify_online(sta: str, ap: str, interface: str, to: int):
     frame_size = []
     interval_time = []
 
-    print("Starting online analysis...")
-
     while True:
-        print("Listening for 20 seconds...")
+        print("Listening for " + str(to) + " seconds...")
         capture = pyshark.LiveCapture(interface=interface.lower(), display_filter=capt_filter)
         capture.sniff(timeout=to)
 
         print("Starting online analysis...")
 
-        for pck in capture:
+        for pck in capture._packets:
             frame_size.append(int(pck.frame_info.len))
             interval_time.append(float(pck.frame_info.time_delta_displayed))
         # Calculate the mean of the sniffed data
